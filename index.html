@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes RÃªves Avant 30 Ans</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #050510;
+      overflow: hidden;
+      height: 100vh;
+      height: 100dvh;
+      width: 100vw;
+      font-family: 'Inter', sans-serif;
+      cursor: default;
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+      overscroll-behavior: none;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+
+    .title {
+      position: fixed;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      animation: fadeIn 2s ease 0.5s forwards;
+    }
+
+    .title h1 {
+      font-family: 'Cinzel', serif;
+      font-weight: 400;
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      letter-spacing: 0.15em;
+      text-transform: capitalize;
+      font-variant: small-caps;
+      color: rgba(220, 215, 240, 0.7);
+      text-shadow: 0 0 30px rgba(167, 139, 250, 0.15);
+    }
+
+    .title p {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: rgba(200, 190, 230, 0.35);
+      margin-top: 8px;
+      text-transform: uppercase;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    .dream-tooltip {
+      position: fixed;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      transform: translateY(5px);
+    }
+
+    .dream-tooltip.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .dream-tooltip .tooltip-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dream-tooltip .tooltip-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 1.3rem;
+      color: rgba(220, 210, 245, 0.9);
+      text-shadow: 0 0 20px rgba(167, 139, 250, 0.4);
+      white-space: nowrap;
+    }
+
+    .dream-tooltip .tooltip-delete {
+      pointer-events: all;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1px solid rgba(250, 120, 120, 0.15);
+      background: rgba(80, 20, 20, 0.25);
+      color: rgba(250, 150, 150, 0.4);
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      flex-shrink: 0;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .dream-tooltip .tooltip-delete:hover {
+      border-color: rgba(250, 100, 100, 0.4);
+      color: rgba(255, 130, 130, 0.8);
+      background: rgba(120, 30, 30, 0.35);
+    }
+
+    .dream-tooltip .tooltip-progress {
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dream-tooltip .progress-bar {
+      width: 100px;
+      height: 8px;
+      background: rgba(100, 80, 160, 0.25);
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      pointer-events: all;
+      position: relative;
+    }
+
+    .dream-tooltip .progress-bar:hover {
+      background: rgba(100, 80, 160, 0.4);
+    }
+
+    .dream-tooltip .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, rgba(167, 139, 250, 0.7), rgba(220, 200, 255, 0.95));
+      border-radius: 4px;
+      transition: width 0.3s ease;
+      pointer-events: none;
+    }
+
+    .dream-tooltip .progress-text {
+      font-size: 0.65rem;
+      color: rgba(180, 170, 210, 0.5);
+      letter-spacing: 0.05em;
+    }
+
+    .dream-tooltip .tooltip-desc {
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: rgba(180, 170, 210, 0.45);
+      margin-top: 4px;
+      max-width: 250px;
+      white-space: normal;
+    }
+
+    .input-section {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      opacity: 0;
+      animation: fadeIn 2s ease 1.5s forwards;
+    }
+
+    .input-section input {
+      width: 300px;
+      max-width: 60vw;
+      -webkit-user-select: text;
+      user-select: text;
+      touch-action: manipulation;
+      padding: 12px 22px;
+      border-radius: 50px;
+      border: 1px solid rgba(167, 139, 250, 0.12);
+      background: rgba(10, 8, 25, 0.5);
+      backdrop-filter: blur(15px);
+      color: rgba(220, 210, 245, 0.8);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .input-section input::placeholder {
+      color: rgba(180, 170, 210, 0.2);
+    }
+
+    .input-section input:focus {
+      border-color: rgba(167, 139, 250, 0.35);
+      box-shadow: 0 0 40px rgba(167, 139, 250, 0.07);
+    }
+
+    .input-section button {
+      padding: 12px 20px;
+      border-radius: 50px;
+      border: 1px solid rgba(167, 139, 250, 0.15);
+      background: rgba(60, 40, 120, 0.2);
+      color: rgba(200, 180, 240, 0.5);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .input-section button:hover {
+      background: rgba(60, 40, 120, 0.4);
+      border-color: rgba(167, 139, 250, 0.35);
+      color: rgba(220, 200, 255, 0.8);
+    }
+
+    /* Sound toggle */
+    .sound-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10;
+      background: none;
+      border: 1px solid rgba(167, 139, 250, 0.12);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: rgba(200, 180, 240, 0.3);
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      opacity: 0;
+      animation: fadeIn 2s ease 2s forwards;
+    }
+
+    .sound-toggle:hover {
+      border-color: rgba(167, 139, 250, 0.4);
+      color: rgba(200, 180, 240, 0.7);
+    }
+
+    .sound-toggle.active {
+      color: rgba(200, 180, 240, 0.6);
+      border-color: rgba(167, 139, 250, 0.3);
+    }
+
+    /* â•â•â• LOCK BUTTON â•â•â• */
+    .lock-toggle {
+      position: fixed;
+      top: 20px;
+      right: 70px;
+      z-index: 10;
+      background: none;
+      border: 1px solid rgba(167, 139, 250, 0.12);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: rgba(200, 180, 240, 0.3);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      opacity: 0;
+      animation: fadeIn 2s ease 2s forwards;
+    }
+
+    .lock-toggle:hover {
+      border-color: rgba(167, 139, 250, 0.4);
+      color: rgba(200, 180, 240, 0.7);
+    }
+
+    .lock-toggle.unlocked {
+      color: rgba(139, 250, 167, 0.5);
+      border-color: rgba(139, 250, 167, 0.2);
+    }
+
+    /* â•â•â• LOCKED STATES â•â•â• */
+    .input-section.locked {
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+
+    .tooltip-delete.locked {
+      display: none;
+    }
+
+    .progress-bar.locked {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: rgba(180, 170, 210, 0.12);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    /* â•â•â• CREATE YOUR OWN BUTTON â•â•â• */
+    .create-own-btn {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      padding: 12px 28px;
+      border-radius: 50px;
+      border: 1px solid rgba(167, 139, 250, 0.2);
+      background: rgba(30, 20, 70, 0.35);
+      backdrop-filter: blur(15px);
+      color: rgba(210, 195, 255, 0.6);
+      font-family: 'Cinzel', serif;
+      font-weight: 400;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      opacity: 0;
+      animation: fadeIn 2s ease 2.5s forwards;
+    }
+
+    .create-own-btn:hover {
+      background: rgba(60, 40, 120, 0.45);
+      border-color: rgba(167, 139, 250, 0.45);
+      color: rgba(230, 215, 255, 0.9);
+      box-shadow: 0 0 30px rgba(167, 139, 250, 0.1);
+    }
+
+    /* â•â•â• EDITOR OVERLAY â•â•â• */
+    .editor-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(5, 5, 16, 0.92);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    .editor-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .editor-panel {
+      width: 90%;
+      max-width: 560px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(20px);
+      transition: transform 0.5s ease;
+    }
+
+    .editor-overlay.open .editor-panel {
+      transform: translateY(0);
+    }
+
+    .editor-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .editor-header h2 {
+      font-family: 'Cinzel', serif;
+      font-weight: 400;
+      font-variant: small-caps;
+      font-size: 1.6rem;
+      letter-spacing: 0.12em;
+      color: rgba(220, 215, 240, 0.7);
+      text-shadow: 0 0 30px rgba(167, 139, 250, 0.15);
+    }
+
+    .editor-header p {
+      font-size: 0.75rem;
+      color: rgba(180, 170, 210, 0.35);
+      margin-top: 8px;
+      letter-spacing: 0.1em;
+    }
+
+    .editor-dreams-list {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 8px;
+      margin-bottom: 20px;
+      max-height: 50vh;
+    }
+
+    .editor-dreams-list::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .editor-dreams-list::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .editor-dreams-list::-webkit-scrollbar-thumb {
+      background: rgba(167, 139, 250, 0.15);
+      border-radius: 2px;
+    }
+
+    .editor-dream-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      animation: fadeIn 0.3s ease forwards;
+    }
+
+    .editor-dream-row input {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(167, 139, 250, 0.1);
+      background: rgba(15, 12, 35, 0.5);
+      color: rgba(220, 210, 245, 0.85);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.3s;
+      -webkit-user-select: text;
+      user-select: text;
+      touch-action: manipulation;
+    }
+
+    .editor-dream-row input::placeholder {
+      color: rgba(180, 170, 210, 0.2);
+    }
+
+    .editor-dream-row input:focus {
+      border-color: rgba(167, 139, 250, 0.35);
+    }
+
+    .editor-dream-row .remove-dream {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(167, 139, 250, 0.1);
+      background: none;
+      color: rgba(200, 180, 240, 0.3);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .editor-dream-row .remove-dream:hover {
+      border-color: rgba(250, 100, 100, 0.3);
+      color: rgba(250, 130, 130, 0.7);
+    }
+
+    .editor-add-btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px dashed rgba(167, 139, 250, 0.12);
+      background: none;
+      color: rgba(180, 170, 210, 0.3);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .editor-add-btn:hover {
+      border-color: rgba(167, 139, 250, 0.3);
+      color: rgba(200, 190, 230, 0.6);
+      background: rgba(60, 40, 120, 0.1);
+    }
+
+    .editor-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .editor-actions button {
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .editor-launch-btn {
+      border: 1px solid rgba(167, 139, 250, 0.3);
+      background: rgba(80, 50, 160, 0.25);
+      color: rgba(220, 200, 255, 0.8);
+    }
+
+    .editor-launch-btn:hover {
+      background: rgba(100, 60, 190, 0.4);
+      border-color: rgba(167, 139, 250, 0.5);
+      color: rgba(240, 225, 255, 0.95);
+      box-shadow: 0 0 30px rgba(167, 139, 250, 0.15);
+    }
+
+    .editor-cancel-btn {
+      border: 1px solid rgba(167, 139, 250, 0.1);
+      background: none;
+      color: rgba(180, 170, 210, 0.4);
+    }
+
+    .editor-cancel-btn:hover {
+      border-color: rgba(167, 139, 250, 0.25);
+      color: rgba(200, 190, 230, 0.6);
+    }
+
+    /* â•â•â• MOBILE â•â•â• */
+    @media (max-width: 600px) {
+      .title {
+        top: 24px;
+        width: 90%;
+      }
+
+      .title h1 {
+        font-size: 1.3rem;
+        letter-spacing: 0.1em;
+      }
+
+      .title p {
+        font-size: 0.6rem;
+        letter-spacing: 0.15em;
+      }
+
+      .input-section {
+        bottom: 24px;
+        width: 90%;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .input-section input {
+        width: 100%;
+        max-width: none;
+        flex: 1;
+        padding: 10px 18px;
+        font-size: 0.8rem;
+      }
+
+      .input-section button {
+        padding: 10px 16px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+      }
+
+      .sound-toggle {
+        top: 16px;
+        right: 16px;
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+      }
+
+      .dream-tooltip {
+        max-width: 80vw;
+      }
+
+      .dream-tooltip .tooltip-title {
+        font-size: 1.1rem;
+        white-space: normal;
+      }
+
+      .dream-tooltip .tooltip-desc {
+        font-size: 0.7rem;
+        max-width: 70vw;
+      }
+
+      .hint {
+        font-size: 0.5rem;
+        bottom: 8px;
+        white-space: normal;
+        text-align: center;
+        width: 80%;
+      }
+
+      .create-own-btn {
+        bottom: 85px;
+        padding: 10px 22px;
+        font-size: 0.75rem;
+      }
+
+      .editor-header h2 {
+        font-size: 1.3rem;
+      }
+
+      .editor-dream-row input {
+        padding: 9px 14px;
+        font-size: 0.8rem;
+      }
+
+      .editor-actions {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .editor-actions button {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .title h1 {
+        font-size: 1.7rem;
+      }
+
+      .input-section {
+        bottom: 20px;
+        gap: 6px;
+      }
+
+      .input-section input {
+        padding: 9px 14px;
+        font-size: 0.75rem;
+      }
+
+      .input-section button {
+        padding: 9px 12px;
+        font-size: 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="sky"></canvas>
+
+<div class="title">
+  <h1>RÃªves d'Alice</h1>
+  <p>touche les Ã©toiles brillantes</p>
+</div>
+
+<div class="dream-tooltip" id="tooltip">
+  <div class="tooltip-header">
+    <div class="tooltip-title" id="tooltipTitle"></div>
+    <button class="tooltip-delete" id="tooltipDelete" title="Supprimer ce rÃªve">Ã—</button>
+  </div>
+  <div class="tooltip-progress" id="tooltipProgress">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-text" id="progressText"></span>
+  </div>
+  <div class="tooltip-desc" id="tooltipDesc"></div>
+</div>
+
+<button class="sound-toggle" id="soundToggle" title="Activer le son">â™ª</button>
+<button class="lock-toggle" id="lockToggle" title="DÃ©verrouiller l'Ã©dition">ðŸ”’</button>
+
+<div class="input-section">
+  <input type="text" id="dreamInput" placeholder="Envoie un rÃªve dans le ciel..." />
+  <button id="sendBtn">Envoyer</button>
+</div>
+
+<button class="create-own-btn" id="createOwnBtn">âœ¦ crÃ©e ton ciel âœ¦</button>
+
+<div class="editor-overlay" id="editorOverlay">
+  <div class="editor-panel">
+    <div class="editor-header">
+      <h2>CrÃ©e Ton Ciel</h2>
+      <p>entre tes rÃªves et envoie-les dans les Ã©toiles</p>
+    </div>
+    <div class="editor-dreams-list" id="editorList"></div>
+    <button class="editor-add-btn" id="editorAddBtn">+ ajouter un rÃªve</button>
+    <div class="editor-actions">
+      <button class="editor-launch-btn" id="editorLaunchBtn">âœ¦ envoyer dans le ciel</button>
+      <button class="editor-cancel-btn" id="editorCancelBtn">annuler</button>
+    </div>
+  </div>
+</div>
+
+<div class="hint">chaque Ã©toile brillante est un rÃªve Â· clique sur la barre pour ajuster la progression</div>
+
+<script>
+const canvas = document.getElementById('sky');
+const ctx = canvas.getContext('2d');
+const tooltip = document.getElementById('tooltip');
+const tooltipTitle = document.getElementById('tooltipTitle');
+const tooltipDesc = document.getElementById('tooltipDesc');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+
+let W, H;
+let mouseX = 0, mouseY = 0;
+let smoothMouseX = 0, smoothMouseY = 0;
+const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 600;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  placeDreamStars();
+}
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// AUDIO ENGINE - Web Audio API
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+let audioCtx = null;
+let soundEnabled = false;
+let ambientGain = null;
+let ambientNodes = [];
+
+function initAudio() {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  ambientGain = audioCtx.createGain();
+  ambientGain.gain.value = 0;
+  ambientGain.connect(audioCtx.destination);
+}
+
+function startAmbient() {
+  if (!audioCtx || ambientNodes.length > 0) return;
+
+  // Layer 1: Deep space drone - low frequency pad
+  const drone1 = audioCtx.createOscillator();
+  const drone1Gain = audioCtx.createGain();
+  drone1.type = 'sine';
+  drone1.frequency.value = 55; // Low A
+  drone1Gain.gain.value = 0.06;
+  drone1.connect(drone1Gain);
+  drone1Gain.connect(ambientGain);
+  drone1.start();
+
+  // Layer 2: Ethereal fifth
+  const drone2 = audioCtx.createOscillator();
+  const drone2Gain = audioCtx.createGain();
+  drone2.type = 'sine';
+  drone2.frequency.value = 82.5; // E above
+  drone2Gain.gain.value = 0.04;
+  drone2.connect(drone2Gain);
+  drone2Gain.connect(ambientGain);
+  drone2.start();
+
+  // Layer 3: High shimmer with slow LFO
+  const shimmer = audioCtx.createOscillator();
+  const shimmerGain = audioCtx.createGain();
+  const shimmerLFO = audioCtx.createOscillator();
+  const shimmerLFOGain = audioCtx.createGain();
+  shimmer.type = 'sine';
+  shimmer.frequency.value = 440;
+  shimmerGain.gain.value = 0.008;
+  shimmerLFO.type = 'sine';
+  shimmerLFO.frequency.value = 0.1;
+  shimmerLFOGain.gain.value = 0.006;
+  shimmerLFO.connect(shimmerLFOGain);
+  shimmerLFOGain.connect(shimmerGain.gain);
+  shimmer.connect(shimmerGain);
+  shimmerGain.connect(ambientGain);
+  shimmer.start();
+  shimmerLFO.start();
+
+  // Layer 4: Another harmonic
+  const drone3 = audioCtx.createOscillator();
+  const drone3Gain = audioCtx.createGain();
+  drone3.type = 'sine';
+  drone3.frequency.value = 110;
+  drone3Gain.gain.value = 0.03;
+  drone3.connect(drone3Gain);
+  drone3Gain.connect(ambientGain);
+  drone3.start();
+
+  // Layer 5: Filtered noise for that "space wind" feel
+  const noiseSize = audioCtx.sampleRate * 2;
+  const noiseBuffer = audioCtx.createBuffer(1, noiseSize, audioCtx.sampleRate);
+  const noiseData = noiseBuffer.getChannelData(0);
+  for (let i = 0; i < noiseSize; i++) {
+    noiseData[i] = (Math.random() * 2 - 1) * 0.5;
+  }
+  const noise = audioCtx.createBufferSource();
+  noise.buffer = noiseBuffer;
+  noise.loop = true;
+  const noiseFilter = audioCtx.createBiquadFilter();
+  noiseFilter.type = 'bandpass';
+  noiseFilter.frequency.value = 200;
+  noiseFilter.Q.value = 0.5;
+  const noiseGain = audioCtx.createGain();
+  noiseGain.gain.value = 0.012;
+  // Slow modulation on noise filter
+  const noiseLFO = audioCtx.createOscillator();
+  const noiseLFOGain = audioCtx.createGain();
+  noiseLFO.type = 'sine';
+  noiseLFO.frequency.value = 0.04;
+  noiseLFOGain.gain.value = 100;
+  noiseLFO.connect(noiseLFOGain);
+  noiseLFOGain.connect(noiseFilter.frequency);
+  noise.connect(noiseFilter);
+  noiseFilter.connect(noiseGain);
+  noiseGain.connect(ambientGain);
+  noise.start();
+  noiseLFO.start();
+
+  ambientNodes = [drone1, drone2, drone3, shimmer, shimmerLFO, noise, noiseLFO];
+
+  // Fade in
+  ambientGain.gain.linearRampToValueAtTime(1, audioCtx.currentTime + 3);
+}
+
+function stopAmbient() {
+  if (!audioCtx) return;
+  ambientGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2);
+  setTimeout(() => {
+    ambientNodes.forEach(n => { try { n.stop(); } catch(e) {} });
+    ambientNodes = [];
+  }, 2500);
+}
+
+// Hover sound - gentle chime/bell when hovering a dream star
+let lastHoveredTitle = null;
+
+function playHoverChime(ds) {
+  if (!audioCtx || !soundEnabled) return;
+  if (ds.title === lastHoveredTitle) return;
+  lastHoveredTitle = ds.title;
+
+  const now = audioCtx.currentTime;
+
+  // Use hue to pick pitch - maps hue range to a pentatonic scale
+  const pentatonic = [261.6, 293.7, 329.6, 392.0, 440.0, 523.3, 587.3, 659.3];
+  const noteIdx = Math.abs(hashStr(ds.title)) % pentatonic.length;
+  const freq = pentatonic[noteIdx];
+
+  // Main chime tone
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'sine';
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(0.08 * ds.progress, now + 0.05);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start(now);
+  osc.stop(now + 2.5);
+
+  // Harmonic overtone
+  const osc2 = audioCtx.createOscillator();
+  const gain2 = audioCtx.createGain();
+  osc2.type = 'sine';
+  osc2.frequency.value = freq * 2;
+  gain2.gain.setValueAtTime(0, now);
+  gain2.gain.linearRampToValueAtTime(0.03 * ds.progress, now + 0.03);
+  gain2.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+  osc2.connect(gain2);
+  gain2.connect(audioCtx.destination);
+  osc2.start(now);
+  osc2.stop(now + 1.8);
+
+  // Soft fifth
+  const osc3 = audioCtx.createOscillator();
+  const gain3 = audioCtx.createGain();
+  osc3.type = 'sine';
+  osc3.frequency.value = freq * 1.5;
+  gain3.gain.setValueAtTime(0, now);
+  gain3.gain.linearRampToValueAtTime(0.015 * ds.progress, now + 0.08);
+  gain3.gain.exponentialRampToValueAtTime(0.001, now + 2);
+  osc3.connect(gain3);
+  gain3.connect(audioCtx.destination);
+  osc3.start(now);
+  osc3.stop(now + 2);
+}
+
+function playLaunchSound() {
+  if (!audioCtx || !soundEnabled) return;
+  const now = audioCtx.currentTime;
+
+  // Rising sparkle sweep
+  for (let i = 0; i < 5; i++) {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    const startFreq = 300 + i * 80;
+    osc.frequency.setValueAtTime(startFreq, now + i * 0.08);
+    osc.frequency.exponentialRampToValueAtTime(startFreq * 2, now + i * 0.08 + 0.6);
+    gain.gain.setValueAtTime(0, now + i * 0.08);
+    gain.gain.linearRampToValueAtTime(0.04, now + i * 0.08 + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 1);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now + i * 0.08);
+    osc.stop(now + i * 0.08 + 1);
+  }
+}
+
+// Sound toggle button
+const soundToggle = document.getElementById('soundToggle');
+soundToggle.addEventListener('click', () => {
+  initAudio();
+  soundEnabled = !soundEnabled;
+  soundToggle.classList.toggle('active', soundEnabled);
+  soundToggle.textContent = soundEnabled ? 'â™«' : 'â™ª';
+  if (soundEnabled) {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    startAmbient();
+  } else {
+    stopAmbient();
+  }
+});
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// BACKGROUND STARS - multi-layered, varied colors
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+const bgStars = [];
+const BG_COUNT = isMobile ? 350 : 800;
+
+// Star color palette: white, blue-white, gold, warm white, pink-white
+const starColors = [
+  { r: 255, g: 255, b: 255 },   // pure white
+  { r: 200, g: 220, b: 255 },   // blue-white
+  { r: 255, g: 240, b: 200 },   // warm gold
+  { r: 255, g: 220, b: 210 },   // pink-white
+  { r: 180, g: 200, b: 255 },   // cool blue
+  { r: 255, g: 200, b: 180 },   // warm orange
+  { r: 230, g: 230, b: 255 },   // icy white
+];
+
+function initBgStars() {
+  bgStars.length = 0;
+  for (let i = 0; i < BG_COUNT; i++) {
+    const color = starColors[Math.floor(Math.random() * starColors.length)];
+    // Most stars are tiny dust, a few are medium with mini flares
+    const isBright = Math.random() < 0.05;
+    bgStars.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      baseX: 0, baseY: 0,
+      size: isBright ? (Math.random() * 1.2 + 0.7) : (Math.random() * 0.7 + 0.15),
+      opacity: isBright ? (Math.random() * 0.3 + 0.35) : (Math.random() * 0.3 + 0.06),
+      speed: Math.random() * 0.015 + 0.003,
+      offset: Math.random() * Math.PI * 2,
+      depth: Math.random() * 0.4 + 0.05,
+      color,
+      isBright,
+      flareLen: isBright ? (Math.random() * 5 + 3) : 0,
+    });
+  }
+  bgStars.forEach(s => { s.baseX = s.x; s.baseY = s.y; });
+}
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// DREAM STARS - with progress & magnitude
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+//
+// progress: 0.0 (pas commencÃ©) â†’ 1.0 (rÃ©alisÃ©)
+//   â†’ contrÃ´le la luminositÃ© / visibilitÃ©
+// magnitude: 1 (petit rÃªve) â†’ 3 (immense rÃªve)
+//   â†’ contrÃ´le la taille physique de l'Ã©toile
+
+const defaultDreams = [
+  { title: 'Ã‰crire un livre fantasy',             desc: 'CrÃ©er un univers entier, une saga Ã©pique',                    progress: 0, magnitude: 3 },
+  { title: 'Faire un semi Iron Man',              desc: 'Nager, pÃ©daler, courir â€” repousser chaque limite',            progress: 0, magnitude: 2.5 },
+  { title: 'Composer une musique de film',        desc: 'Faire vibrer les gens avec une bande originale',              progress: 0, magnitude: 3 },
+  { title: 'Faire un film',                       desc: 'Raconter une histoire qui marque les esprits',                progress: 0, magnitude: 3 },
+  { title: 'Jouer de la guitare dans un groupe',  desc: 'Apprendre l\'Ã©lectrique et monter sur scÃ¨ne',                 progress: 0, magnitude: 2.5 },
+  { title: 'RandonnÃ©e du Seigneur des Anneaux',   desc: 'Marcher sur les traces de la CommunautÃ© en Nouvelle-ZÃ©lande', progress: 0, magnitude: 2.5 },
+  { title: 'Cacher un trÃ©sor',                    desc: 'Enterrer un secret quelque part dans le monde',               progress: 0, magnitude: 1.5 },
+  { title: 'Question pour un Champion',           desc: 'Briller sur le plateau de la lÃ©gendaire Ã©mission',            progress: 0, magnitude: 2 },
+  { title: 'CrÃ©er un jeu vidÃ©o',                  desc: 'Donner vie Ã  un monde interactif',                            progress: 0, magnitude: 2.5 },
+  { title: 'Devenir courageuse',                  desc: 'Oser sans hÃ©siter, affronter ses peurs',                      progress: 0, magnitude: 2 },
+  { title: 'Apprendre Ã  me battre',               desc: 'MaÃ®triser un art martial, se sentir forte',                   progress: 0, magnitude: 2 },
+  { title: 'Finir un triathlon',                   desc: 'Franchir la ligne d\'arrivÃ©e, Ã©puisÃ©e mais fiÃ¨re',            progress: 0, magnitude: 2 },
+  { title: 'Aventure vÃ©lo Ã  travers la France',   desc: 'PÃ©daler de village en village, libre comme l\'air',           progress: 0, magnitude: 2 },
+  { title: 'Construire un camping',               desc: 'CrÃ©er un lieu magique en pleine nature',                      progress: 0, magnitude: 2.5 },
+  { title: 'Passer 1000 Elo aux Ã©checs',          desc: 'Progresser coup aprÃ¨s coup, devenir stratÃ¨ge',                progress: 0, magnitude: 1.5 },
+  { title: 'Battre mon pÃ¨re au tennis',            desc: 'Le jour de gloire viendra',                                   progress: 0, magnitude: 2 },
+];
+
+// â•â•â• STORAGE HELPERS (safe for file:// protocol) â•â•â•
+function store(key, data) {
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
+}
+function retrieve(key) {
+  try {
+    const d = localStorage.getItem(key);
+    return d ? JSON.parse(d) : null;
+  } catch(e) { return null; }
+}
+
+// Mode: 'alice' = Alice's original dreams, 'custom' = visitor's custom sky
+let currentMode = retrieve('skyMode') || 'alice';
+
+// If custom mode but no custom data â†’ reset to alice
+if (currentMode === 'custom' && !retrieve('skyDreams30_custom')) {
+  currentMode = 'alice';
+  store('skyMode', 'alice');
+}
+
+function loadDreams() {
+  if (currentMode === 'custom') {
+    return retrieve('skyDreams30_custom') || [];
+  }
+  // Alice mode: try saved progress, then old v3 key, then defaults
+  return retrieve('skyDreams30_alice')
+      || retrieve('skyDreams30_v3')
+      || JSON.parse(JSON.stringify(defaultDreams));
+}
+
+function saveDreams(dreams) {
+  store(currentMode === 'custom' ? 'skyDreams30_custom' : 'skyDreams30_alice', dreams);
+}
+
+function switchMode(mode) {
+  currentMode = mode;
+  store('skyMode', mode);
+  placeDreamStars();
+
+  dreamStars.forEach((ds, i) => {
+    ds.born = 0;
+    ds.bornTarget = 1;
+    setTimeout(() => spawnParticles(ds.baseX, ds.baseY, ds.hue), i * 80);
+  });
+
+  updateModeUI();
+  playLaunchSound();
+}
+
+// â•â•â• EDIT LOCK SYSTEM â•â•â•
+// Alice mode: locked by default, need secret code to edit
+// Custom mode: always unlocked (visitor's own sky)
+const ALICE_SECRET = 'pizza';
+let aliceUnlocked = false;
+
+function canEdit() {
+  return currentMode === 'custom' || aliceUnlocked;
+}
+
+function updateEditLock() {
+  const inputSection = document.querySelector('.input-section');
+  const deleteBtn = document.getElementById('tooltipDelete');
+  const progressBar = document.querySelector('.progress-bar');
+  const lockBtn = document.getElementById('lockToggle');
+
+  if (canEdit()) {
+    inputSection.classList.remove('locked');
+    deleteBtn.classList.remove('locked');
+    progressBar.classList.remove('locked');
+    if (currentMode === 'alice') {
+      lockBtn.textContent = 'ðŸ”“';
+      lockBtn.classList.add('unlocked');
+      lockBtn.title = 'Ã‰dition dÃ©verrouillÃ©e';
+    }
+  } else {
+    inputSection.classList.add('locked');
+    deleteBtn.classList.add('locked');
+    progressBar.classList.add('locked');
+    lockBtn.textContent = 'ðŸ”’';
+    lockBtn.classList.remove('unlocked');
+    lockBtn.title = 'DÃ©verrouiller l\'Ã©dition';
+  }
+
+  // Hide lock button entirely in custom mode (always editable)
+  lockBtn.style.display = currentMode === 'custom' ? 'none' : 'flex';
+}
+
+document.getElementById('lockToggle').addEventListener('click', () => {
+  if (currentMode === 'custom') return;
+  if (aliceUnlocked) {
+    aliceUnlocked = false;
+    updateEditLock();
+    return;
+  }
+  const code = prompt('Code secret pour Ã©diter les rÃªves d\'Alice :');
+  if (code && code.trim().toLowerCase() === ALICE_SECRET) {
+    aliceUnlocked = true;
+    updateEditLock();
+  }
+});
+
+function updateModeUI() {
+  const titleEl = document.querySelector('.title h1');
+  const btn = document.getElementById('createOwnBtn');
+
+  if (currentMode === 'custom') {
+    titleEl.textContent = 'Mes RÃªves';
+    btn.textContent = 'âœ¦ rÃªves d\'alice âœ¦';
+    btn.onclick = () => switchMode('alice');
+  } else {
+    titleEl.textContent = 'RÃªves d\'Alice';
+    btn.textContent = 'âœ¦ crÃ©e ton ciel âœ¦';
+    btn.onclick = openEditor;
+    aliceUnlocked = false; // Re-lock when switching back to alice
+  }
+  updateEditLock();
+}
+
+let dreamStars = [];
+
+function placeDreamStars() {
+  const dreams = loadDreams();
+  dreamStars = dreams.map((dream, i) => {
+    const existing = dreamStars[i];
+    const seed = hashStr(dream.title);
+    const cols = isMobile ? 2 : 4;
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    const totalRows = Math.ceil(dreams.length / cols);
+
+    const marginX = isMobile ? W * 0.06 : W * 0.1;
+    const marginTop = isMobile ? H * 0.12 : H * 0.15;
+    const marginBottom = isMobile ? H * 0.15 : H * 0.22;
+    const usableW = W - marginX * 2;
+    const usableH = H - marginTop - marginBottom;
+    const cellW = usableW / cols;
+    const cellH = usableH / Math.max(totalRows, 1);
+
+    const x = marginX + cellW * col + cellW * 0.15 + (seed % 100) / 100 * cellW * 0.7;
+    const y = marginTop + cellH * row + cellH * 0.15 + ((seed >> 8) % 100) / 100 * cellH * 0.7;
+
+    const progress = Math.max(0, Math.min(1, dream.progress || 0));
+    const magnitude = dream.magnitude || 1.5;
+
+    // Size based on magnitude: bigger dreams â†’ bigger stars
+    const sizeScale = isMobile ? 3 : 4.5;
+    const baseSize = 4 + magnitude * sizeScale;
+
+    // Opacity/brightness driven by progress
+    // Even at 0 progress they're visible
+    const baseOpacity = 0.5 + progress * 0.5;
+
+    return {
+      x, y,
+      baseX: x,
+      baseY: y,
+      title: dream.title,
+      desc: dream.desc,
+      progress,
+      magnitude,
+      size: baseSize,
+      baseSize,
+      // Varied star colors: some blue, some gold, some pink, some white
+      colorType: seed % 5, // 0=blue-white, 1=gold, 2=pink, 3=pure white, 4=cool blue
+      hue: 210 + (seed % 90),
+      opacity: baseOpacity,
+      twinkleSpeed: 0.012 + (seed % 20) / 2500,
+      twinkleOffset: (seed % 628) / 100,
+      depth: 0.2 + (seed % 30) / 100,
+      hovered: false,
+      hoverAnim: 0,
+      born: existing ? 1 : 0,
+      bornTarget: 1,
+      dreamIndex: i,
+    };
+  });
+}
+
+function hashStr(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = ((h << 5) - h) + str.charCodeAt(i);
+    h |= 0;
+  }
+  return Math.abs(h);
+}
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// SHOOTING STARS
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+const shooters = [];
+for (let i = 0; i < 3; i++) shooters.push({ active: false });
+
+function resetShooter(s) {
+  s.x = Math.random() * W * 0.8;
+  s.y = Math.random() * H * 0.3;
+  s.len = 60 + Math.random() * 80;
+  s.speed = 5 + Math.random() * 7;
+  s.angle = Math.PI / 4 + (Math.random() - 0.5) * 0.4;
+  s.life = 1;
+  s.decay = 0.008 + Math.random() * 0.012;
+  s.active = true;
+}
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// PARTICLES
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+const particles = [];
+
+function spawnParticles(x, y, hue) {
+  for (let i = 0; i < 25; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 2.5 + 0.5;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 1,
+      decay: 0.008 + Math.random() * 0.012,
+      size: Math.random() * 2.5 + 0.5,
+      hue,
+    });
+  }
+}
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// MAIN LOOP
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+let time = 0;
+let hoveredDream = null;
+let tooltipHovered = false;
+let lastHoveredDreamRef = null;
+
+tooltip.addEventListener('mouseenter', () => { tooltipHovered = true; });
+tooltip.addEventListener('mouseleave', () => { tooltipHovered = false; });
+
+function mainLoop() {
+  time++;
+  ctx.clearRect(0, 0, W, H);
+
+  smoothMouseX += (mouseX - smoothMouseX) * 0.04;
+  smoothMouseY += (mouseY - smoothMouseY) * 0.04;
+
+  drawNebula();
+
+  // Background stars
+  for (const s of bgStars) {
+    const dx = (smoothMouseX - W / 2) * s.depth * 0.025;
+    const dy = (smoothMouseY - H / 2) * s.depth * 0.025;
+    const x = s.baseX + dx;
+    const y = s.baseY + dy;
+    const twinkle = s.opacity;
+    const c = s.color;
+
+    if (s.isBright) {
+      // Bright bg stars get a small soft glow + mini cross flare
+      const glowR = s.size * 4;
+      const grad = ctx.createRadialGradient(x, y, 0, x, y, glowR);
+      grad.addColorStop(0, `rgba(${c.r},${c.g},${c.b},${twinkle * 0.3})`);
+      grad.addColorStop(0.5, `rgba(${c.r},${c.g},${c.b},${twinkle * 0.06})`);
+      grad.addColorStop(1, `rgba(${c.r},${c.g},${c.b},0)`);
+      ctx.beginPath();
+      ctx.arc(x, y, glowR, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Mini 4-point flare
+      const fl = s.flareLen;
+      ctx.save();
+      ctx.globalAlpha = twinkle * 0.6;
+      ctx.strokeStyle = `rgba(${c.r},${c.g},${c.b},1)`;
+      ctx.lineWidth = 0.6;
+      ctx.beginPath();
+      ctx.moveTo(x - fl, y); ctx.lineTo(x + fl, y);
+      ctx.moveTo(x, y - fl); ctx.lineTo(x, y + fl);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.restore();
+    }
+
+    // Core dot
+    ctx.beginPath();
+    ctx.arc(x, y, s.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${c.r},${c.g},${c.b},${twinkle})`;
+    ctx.fill();
+  }
+
+  // Dream stars
+  const prevHovered = hoveredDream;
+  let newHovered = null;
+
+  for (const ds of dreamStars) {
+    const dx = (smoothMouseX - W / 2) * ds.depth * 0.025;
+    const dy = (smoothMouseY - H / 2) * ds.depth * 0.025;
+    ds.x = ds.baseX + dx;
+    ds.y = ds.baseY + dy;
+
+    ds.born += (ds.bornTarget - ds.born) * 0.03;
+
+    const dist = Math.hypot(mouseX - ds.x, mouseY - ds.y);
+    const hoverRadius = isMobile ? 55 : 45;
+    ds.hovered = dist < hoverRadius;
+    if (ds.hovered) newHovered = ds;
+
+    const hTarget = ds.hovered ? 1 : 0;
+    ds.hoverAnim += (hTarget - ds.hoverAnim) * 0.08;
+
+    // Get star color based on colorType
+    const sc = getDreamStarColor(ds.colorType);
+
+    // Gentle breathing pulse unique to dream stars
+    const breathe = 0.85 + 0.15 * Math.sin(time * ds.twinkleSpeed + ds.twinkleOffset);
+
+    const baseOpacity = ds.opacity * ds.born * breathe;
+    const finalOpacity = Math.min(1, baseOpacity + ds.hoverAnim * 0.4);
+    const currentSize = ds.baseSize * ds.born * (0.9 + 0.1 * breathe) + ds.hoverAnim * 4;
+
+    // â”€â”€ Outer soft glow (colored halo around the star) â”€â”€
+    const glowR = currentSize * (6 + ds.progress * 5 + ds.hoverAnim * 8);
+    const glowO = (0.07 + ds.progress * 0.18 + ds.hoverAnim * 0.2) * ds.born * breathe;
+
+    const grad = ctx.createRadialGradient(ds.x, ds.y, 0, ds.x, ds.y, glowR);
+    grad.addColorStop(0, `rgba(${sc.r},${sc.g},${sc.b},${glowO})`);
+    grad.addColorStop(0.2, `rgba(${sc.r},${sc.g},${sc.b},${glowO * 0.5})`);
+    grad.addColorStop(0.5, `rgba(${sc.r},${sc.g},${sc.b},${glowO * 0.1})`);
+    grad.addColorStop(1, `rgba(${sc.r},${sc.g},${sc.b},0)`);
+    ctx.beginPath();
+    ctx.arc(ds.x, ds.y, glowR, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // â”€â”€ Sharp 4-point cross flare (the signature look) â”€â”€
+    drawSharpFlare(ds.x, ds.y, currentSize, finalOpacity, sc, ds.hoverAnim, ds.progress);
+
+    // â”€â”€ Hot white core â”€â”€
+    const coreR = currentSize * (0.5 + ds.progress * 0.3);
+    const coreGrad = ctx.createRadialGradient(ds.x, ds.y, 0, ds.x, ds.y, coreR);
+    coreGrad.addColorStop(0, `rgba(255,255,255,${finalOpacity})`);
+    coreGrad.addColorStop(0.4, `rgba(${sc.r},${sc.g},${sc.b},${finalOpacity * 0.8})`);
+    coreGrad.addColorStop(1, `rgba(${sc.r},${sc.g},${sc.b},0)`);
+    ctx.beginPath();
+    ctx.arc(ds.x, ds.y, coreR, 0, Math.PI * 2);
+    ctx.fillStyle = coreGrad;
+    ctx.fill();
+
+    // Bright center point
+    ctx.beginPath();
+    ctx.arc(ds.x, ds.y, currentSize * 0.2, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${finalOpacity})`;
+    ctx.fill();
+
+    // â”€â”€ Realized dreams: pulsing outer ring â”€â”€
+    if (ds.progress > 0.7) {
+      const sparkleIntensity = (ds.progress - 0.7) / 0.3;
+      const sparkleR = currentSize * 3.5 + Math.sin(time * 0.02 + ds.twinkleOffset) * 4;
+      ctx.beginPath();
+      ctx.arc(ds.x, ds.y, sparkleR, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(${sc.r},${sc.g},${sc.b},${sparkleIntensity * 0.1 * ds.born})`;
+      ctx.lineWidth = 0.6;
+      ctx.stroke();
+    }
+
+    // Hover ring
+    if (ds.hoverAnim > 0.01) {
+      const ringR = currentSize * 3 + ds.hoverAnim * 12;
+      ctx.beginPath();
+      ctx.arc(ds.x, ds.y, ringR, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(${sc.r},${sc.g},${sc.b},${ds.hoverAnim * 0.12})`;
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+  }
+
+  // Keep tooltip visible when mouse is over the tooltip itself
+  if (newHovered) {
+    hoveredDream = newHovered;
+    lastHoveredDreamRef = newHovered;
+  } else if (tooltipHovered && lastHoveredDreamRef) {
+    hoveredDream = lastHoveredDreamRef;
+  } else {
+    hoveredDream = null;
+    lastHoveredDreamRef = null;
+  }
+
+  // Play hover chime when entering a new dream star
+  if (hoveredDream && (!prevHovered || prevHovered.title !== hoveredDream.title)) {
+    playHoverChime(hoveredDream);
+  }
+  if (!hoveredDream) {
+    lastHoveredTitle = null;
+  }
+
+  // Shooting stars
+  if (Math.random() < 0.004) {
+    const s = shooters.find(s => !s.active);
+    if (s) resetShooter(s);
+  }
+  for (const s of shooters) {
+    if (!s.active) continue;
+    s.x += Math.cos(s.angle) * s.speed;
+    s.y += Math.sin(s.angle) * s.speed;
+    s.life -= s.decay;
+    if (s.life <= 0) { s.active = false; continue; }
+    const tx = s.x - Math.cos(s.angle) * s.len;
+    const ty = s.y - Math.sin(s.angle) * s.len;
+    const g = ctx.createLinearGradient(tx, ty, s.x, s.y);
+    g.addColorStop(0, `rgba(255,255,255,0)`);
+    g.addColorStop(1, `rgba(210,200,255,${s.life})`);
+    ctx.beginPath();
+    ctx.moveTo(tx, ty);
+    ctx.lineTo(s.x, s.y);
+    ctx.strokeStyle = g;
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+  }
+
+  // Particles
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy -= 0.01;
+    p.life -= p.decay;
+    if (p.life <= 0) { particles.splice(i, 1); continue; }
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+    ctx.fillStyle = `hsla(${p.hue}, 60%, 80%, ${p.life * 0.5})`;
+    ctx.fill();
+  }
+
+  // Tooltip
+  // On mobile, keep tapped dream visible
+  const displayDream = isMobile ? (tappedDream || null) : hoveredDream;
+
+  if (displayDream) {
+    tooltip.classList.add('visible');
+    tooltipTitle.textContent = displayDream.title;
+    tooltipDesc.textContent = displayDream.desc;
+    const pct = Math.round(displayDream.progress * 100);
+    progressFill.style.width = pct + '%';
+    progressText.textContent = pct === 0 ? 'pas encore commencÃ©' : pct >= 100 ? 'âœ¦ rÃ©alisÃ©' : pct + '% accompli';
+
+    if (isMobile) {
+      // Center tooltip below the star
+      const tooltipW = Math.min(W * 0.8, 250);
+      let tx = displayDream.x - tooltipW / 2;
+      let ty = displayDream.y + 30;
+      // Keep on screen
+      if (tx < 10) tx = 10;
+      if (tx + tooltipW > W - 10) tx = W - tooltipW - 10;
+      if (ty + 80 > H - 80) ty = displayDream.y - 70;
+      tooltip.style.left = tx + 'px';
+      tooltip.style.top = ty + 'px';
+    } else {
+      let tx = displayDream.x + 25;
+      let ty = displayDream.y - 40;
+      if (tx + 260 > W) tx = displayDream.x - 280;
+      if (ty < 10) ty = displayDream.y + 25;
+      tooltip.style.left = tx + 'px';
+      tooltip.style.top = ty + 'px';
+      document.body.style.cursor = 'pointer';
+    }
+  } else {
+    tooltip.classList.remove('visible');
+    if (!isMobile) document.body.style.cursor = 'default';
+  }
+
+  requestAnimationFrame(mainLoop);
+}
+
+// Dream star color palette
+function getDreamStarColor(type) {
+  switch(type) {
+    case 0: return { r: 200, g: 220, b: 255 }; // blue-white
+    case 1: return { r: 255, g: 230, b: 180 }; // warm gold
+    case 2: return { r: 255, g: 200, b: 210 }; // soft pink
+    case 3: return { r: 255, g: 255, b: 255 }; // pure white
+    case 4: return { r: 180, g: 210, b: 255 }; // cool blue
+    default: return { r: 240, g: 240, b: 255 };
+  }
+}
+
+// Sharp 4-point diffraction spike flare (like in the reference photos)
+function drawSharpFlare(x, y, size, opacity, color, hover, progress) {
+  const { r, g, b } = color;
+
+  // Main flare length - long and dramatic like the inspo
+  const mainLen = size * (3.5 + progress * 5 + hover * 9);
+  // Vertical flare slightly longer (like real telescope diffraction)
+  const vertLen = mainLen * 1.3;
+  // Diagonal flare shorter
+  const diagLen = mainLen * 0.4;
+
+  const alpha = opacity * (0.4 + progress * 0.5);
+
+  ctx.save();
+
+  // â”€â”€ Thick soft flare (background glow of the spike) â”€â”€
+  ctx.lineWidth = 2 + hover * 2;
+  ctx.globalAlpha = alpha * 0.15;
+  ctx.strokeStyle = `rgb(${r},${g},${b})`;
+  ctx.beginPath();
+  ctx.moveTo(x - mainLen, y); ctx.lineTo(x + mainLen, y);
+  ctx.moveTo(x, y - vertLen); ctx.lineTo(x, y + vertLen);
+  ctx.stroke();
+
+  // â”€â”€ Medium spike â”€â”€
+  ctx.lineWidth = 1 + hover * 0.8;
+  ctx.globalAlpha = alpha * 0.35;
+  ctx.beginPath();
+  ctx.moveTo(x - mainLen * 0.8, y); ctx.lineTo(x + mainLen * 0.8, y);
+  ctx.moveTo(x, y - vertLen * 0.8); ctx.lineTo(x, y + vertLen * 0.8);
+  ctx.stroke();
+
+  // â”€â”€ Sharp thin spike (the crisp center line) â”€â”€
+  ctx.lineWidth = 0.5 + hover * 0.3;
+  ctx.globalAlpha = alpha * 0.7;
+  ctx.strokeStyle = `rgba(255,255,255,1)`;
+  ctx.beginPath();
+  ctx.moveTo(x - mainLen * 0.6, y); ctx.lineTo(x + mainLen * 0.6, y);
+  ctx.moveTo(x, y - vertLen * 0.6); ctx.lineTo(x, y + vertLen * 0.6);
+  ctx.stroke();
+
+  // â”€â”€ Diagonal spikes (subtle, shorter) â”€â”€
+  ctx.lineWidth = 0.6 + hover * 0.4;
+  ctx.globalAlpha = alpha * 0.2;
+  ctx.strokeStyle = `rgb(${r},${g},${b})`;
+  ctx.beginPath();
+  ctx.moveTo(x - diagLen, y - diagLen); ctx.lineTo(x + diagLen, y + diagLen);
+  ctx.moveTo(x + diagLen, y - diagLen); ctx.lineTo(x - diagLen, y + diagLen);
+  ctx.stroke();
+
+  // â”€â”€ Gradient fade on spike tips using thin triangles â”€â”€
+  // This creates the tapered look at the ends of each spike
+  ctx.globalAlpha = 1;
+  const tipAlpha = alpha * 0.25;
+
+  // Horizontal right tip
+  const hGrad = ctx.createLinearGradient(x, y, x + mainLen, y);
+  hGrad.addColorStop(0, `rgba(${r},${g},${b},${tipAlpha})`);
+  hGrad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+  ctx.fillStyle = hGrad;
+  ctx.beginPath();
+  ctx.moveTo(x, y - 1.5); ctx.lineTo(x + mainLen, y); ctx.lineTo(x, y + 1.5);
+  ctx.fill();
+
+  // Horizontal left tip
+  const hGrad2 = ctx.createLinearGradient(x, y, x - mainLen, y);
+  hGrad2.addColorStop(0, `rgba(${r},${g},${b},${tipAlpha})`);
+  hGrad2.addColorStop(1, `rgba(${r},${g},${b},0)`);
+  ctx.fillStyle = hGrad2;
+  ctx.beginPath();
+  ctx.moveTo(x, y - 1.5); ctx.lineTo(x - mainLen, y); ctx.lineTo(x, y + 1.5);
+  ctx.fill();
+
+  // Vertical top tip
+  const vGrad = ctx.createLinearGradient(x, y, x, y - vertLen);
+  vGrad.addColorStop(0, `rgba(${r},${g},${b},${tipAlpha})`);
+  vGrad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+  ctx.fillStyle = vGrad;
+  ctx.beginPath();
+  ctx.moveTo(x - 1.5, y); ctx.lineTo(x, y - vertLen); ctx.lineTo(x + 1.5, y);
+  ctx.fill();
+
+  // Vertical bottom tip
+  const vGrad2 = ctx.createLinearGradient(x, y, x, y + vertLen);
+  vGrad2.addColorStop(0, `rgba(${r},${g},${b},${tipAlpha})`);
+  vGrad2.addColorStop(1, `rgba(${r},${g},${b},0)`);
+  ctx.fillStyle = vGrad2;
+  ctx.beginPath();
+  ctx.moveTo(x - 1.5, y); ctx.lineTo(x, y + vertLen); ctx.lineTo(x + 1.5, y);
+  ctx.fill();
+
+  ctx.restore();
+}
+
+function drawNebula() {
+  // Deep blue nebula cloud - center (like image 3)
+  const g1 = ctx.createRadialGradient(W * 0.45, H * 0.4, 0, W * 0.45, H * 0.4, W * 0.55);
+  g1.addColorStop(0, 'rgba(25, 50, 100, 0.07)');
+  g1.addColorStop(0.3, 'rgba(20, 40, 90, 0.05)');
+  g1.addColorStop(0.6, 'rgba(15, 30, 70, 0.03)');
+  g1.addColorStop(1, 'transparent');
+  ctx.fillStyle = g1;
+  ctx.fillRect(0, 0, W, H);
+
+  // Upper right blue cloud
+  const g2 = ctx.createRadialGradient(W * 0.7, H * 0.25, 0, W * 0.7, H * 0.25, W * 0.4);
+  g2.addColorStop(0, 'rgba(30, 60, 120, 0.06)');
+  g2.addColorStop(0.4, 'rgba(20, 45, 100, 0.035)');
+  g2.addColorStop(1, 'transparent');
+  ctx.fillStyle = g2;
+  ctx.fillRect(0, 0, W, H);
+
+  // Lower left subtle purple
+  const g3 = ctx.createRadialGradient(W * 0.2, H * 0.7, 0, W * 0.2, H * 0.7, W * 0.35);
+  g3.addColorStop(0, 'rgba(50, 30, 90, 0.04)');
+  g3.addColorStop(0.5, 'rgba(30, 20, 60, 0.02)');
+  g3.addColorStop(1, 'transparent');
+  ctx.fillStyle = g3;
+  ctx.fillRect(0, 0, W, H);
+
+  // Bottom center blue haze
+  const g4 = ctx.createRadialGradient(W * 0.55, H * 0.75, 0, W * 0.55, H * 0.75, W * 0.3);
+  g4.addColorStop(0, 'rgba(20, 50, 110, 0.04)');
+  g4.addColorStop(1, 'transparent');
+  ctx.fillStyle = g4;
+  ctx.fillRect(0, 0, W, H);
+
+  // Top left dark cloud (creates depth contrast)
+  const g5 = ctx.createRadialGradient(W * 0.15, H * 0.2, 0, W * 0.15, H * 0.2, W * 0.3);
+  g5.addColorStop(0, 'rgba(15, 25, 60, 0.05)');
+  g5.addColorStop(1, 'transparent');
+  ctx.fillStyle = g5;
+  ctx.fillRect(0, 0, W, H);
+}
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// LAUNCH NEW DREAM
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+function launchDream() {
+  if (!canEdit()) return;
+  const input = document.getElementById('dreamInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  const dreams = loadDreams();
+  dreams.push({ title: text, desc: 'Un nouveau rÃªve dans les Ã©toiles...', progress: 0, magnitude: 1.5 });
+  saveDreams(dreams);
+
+  placeDreamStars();
+  const newStar = dreamStars[dreamStars.length - 1];
+  if (newStar) {
+    newStar.born = 0;
+    newStar.bornTarget = 1;
+    spawnParticles(newStar.baseX, newStar.baseY, newStar.hue);
+    playLaunchSound();
+  }
+}
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// CLICK / TAP TO ADJUST PROGRESS
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+let tappedDream = null;
+
+function handleStarInteraction(x, y) {
+  // Find nearest dream star to tap position
+  let nearest = null;
+  let nearestDist = Infinity;
+  const hitRadius = isMobile ? 55 : 45;
+
+  for (const ds of dreamStars) {
+    const d = Math.hypot(x - ds.x, y - ds.y);
+    if (d < hitRadius && d < nearestDist) {
+      nearest = ds;
+      nearestDist = d;
+    }
+  }
+
+  if (nearest) {
+    if (isMobile) {
+      // First tap = show tooltip, second tap on same star = cycle progress
+      if (tappedDream && tappedDream.title === nearest.title) {
+        // Second tap: cycle progress (only if allowed)
+        if (canEdit()) {
+          const dreams = loadDreams();
+          const idx = nearest.dreamIndex;
+          if (idx >= 0 && idx < dreams.length) {
+            let p = (dreams[idx].progress || 0) + 0.2;
+            if (p > 1.05) p = 0;
+            dreams[idx].progress = Math.round(p * 100) / 100;
+            saveDreams(dreams);
+            placeDreamStars();
+            spawnParticles(nearest.x, nearest.y, nearest.hue);
+          }
+        }
+        tappedDream = null;
+      } else {
+        // First tap: show tooltip (always allowed)
+        tappedDream = nearest;
+        hoveredDream = nearest;
+        nearest.hoverAnim = 1;
+        playHoverChime(nearest);
+      }
+    } else {
+      // Desktop: click cycles progress (only if allowed)
+      if (canEdit()) {
+        const dreams = loadDreams();
+        const idx = nearest.dreamIndex;
+        if (idx >= 0 && idx < dreams.length) {
+          let p = (dreams[idx].progress || 0) + 0.2;
+          if (p > 1.05) p = 0;
+          dreams[idx].progress = Math.round(p * 100) / 100;
+          saveDreams(dreams);
+          placeDreamStars();
+          spawnParticles(nearest.x, nearest.y, nearest.hue);
+        }
+      }
+    }
+  } else {
+    // Tapped empty space on mobile: dismiss tooltip
+    if (isMobile) {
+      tappedDream = null;
+      hoveredDream = null;
+    }
+  }
+}
+
+canvas.addEventListener('click', (e) => {
+  if (!isMobile) {
+    if (!hoveredDream) return;
+    handleStarInteraction(e.clientX, e.clientY);
+  }
+});
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// PROGRESS BAR CLICK â€” set progress by click position
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+document.querySelector('.progress-bar').addEventListener('click', (e) => {
+  e.stopPropagation();
+  if (!canEdit()) return;
+  const target = isMobile ? tappedDream : (hoveredDream || lastHoveredDreamRef);
+  if (!target) return;
+
+  const rect = e.currentTarget.getBoundingClientRect();
+  const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  // Snap to nearest 0.1 increment
+  const newProgress = Math.round(ratio * 10) / 10;
+
+  const dreams = loadDreams();
+  const idx = target.dreamIndex;
+  if (idx >= 0 && idx < dreams.length) {
+    dreams[idx].progress = newProgress;
+    saveDreams(dreams);
+    placeDreamStars();
+    spawnParticles(target.x, target.y, target.hue);
+
+    // Update tooltip display immediately
+    progressFill.style.width = (newProgress * 100) + '%';
+    progressText.textContent = Math.round(newProgress * 100) + '%';
+  }
+});
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// DELETE DREAM
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+document.getElementById('tooltipDelete').addEventListener('click', (e) => {
+  e.stopPropagation();
+  if (!canEdit()) return;
+  const target = isMobile ? tappedDream : hoveredDream;
+  if (!target) return;
+
+  const dreams = loadDreams();
+  const idx = target.dreamIndex;
+  if (idx >= 0 && idx < dreams.length) {
+    // Particles effect before removing
+    spawnParticles(target.x, target.y, target.hue);
+
+    dreams.splice(idx, 1);
+    saveDreams(dreams);
+    placeDreamStars();
+
+    // Hide tooltip
+    tooltip.classList.remove('visible');
+    hoveredDream = null;
+    tappedDream = null;
+  }
+});
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// EVENTS
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+
+// Desktop: mouse
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+// Mobile: touch
+document.addEventListener('touchstart', e => {
+  const touch = e.touches[0];
+  mouseX = touch.clientX;
+  mouseY = touch.clientY;
+
+  // Check if tap is on canvas (not on input/buttons)
+  if (e.target === canvas) {
+    handleStarInteraction(touch.clientX, touch.clientY);
+  }
+}, { passive: true });
+
+document.addEventListener('touchmove', e => {
+  mouseX = e.touches[0].clientX;
+  mouseY = e.touches[0].clientY;
+}, { passive: true });
+
+// Dismiss tooltip when touching elsewhere on mobile
+document.addEventListener('touchend', () => {
+  // Keep tooltip visible for tapped dream
+  if (isMobile && tappedDream) {
+    hoveredDream = tappedDream;
+  }
+}, { passive: true });
+
+window.addEventListener('resize', () => {
+  const oldW = W, oldH = H;
+  resize();
+  bgStars.forEach(s => {
+    s.baseX = s.baseX / oldW * W;
+    s.baseY = s.baseY / oldH * H;
+  });
+});
+
+document.getElementById('sendBtn').addEventListener('click', launchDream);
+document.getElementById('dreamInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') launchDream();
+});
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// "CRÃ‰E TON CIEL" EDITOR
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+const editorOverlay = document.getElementById('editorOverlay');
+const editorList = document.getElementById('editorList');
+const editorAddBtn = document.getElementById('editorAddBtn');
+const editorLaunchBtn = document.getElementById('editorLaunchBtn');
+const editorCancelBtn = document.getElementById('editorCancelBtn');
+const createOwnBtn = document.getElementById('createOwnBtn');
+
+let editorDreams = [];
+
+function addEditorRow(value = '') {
+  const idx = editorDreams.length;
+  editorDreams.push(value);
+  const row = document.createElement('div');
+  row.className = 'editor-dream-row';
+  row.innerHTML = `
+    <input type="text" placeholder="Ton rÃªve #${idx + 1}..." value="${value.replace(/"/g, '&quot;')}" data-idx="${idx}" />
+    <button class="remove-dream" data-idx="${idx}">Ã—</button>
+  `;
+  editorList.appendChild(row);
+
+  const input = row.querySelector('input');
+  input.addEventListener('input', (e) => {
+    editorDreams[parseInt(e.target.dataset.idx)] = e.target.value;
+  });
+
+  const removeBtn = row.querySelector('.remove-dream');
+  removeBtn.addEventListener('click', () => {
+    if (editorDreams.length <= 1) return;
+    row.remove();
+    editorDreams.splice(idx, 1);
+    // Re-index remaining rows
+    rebuildEditorIndices();
+  });
+
+  // Auto-focus the new input
+  setTimeout(() => input.focus(), 50);
+}
+
+function rebuildEditorIndices() {
+  const rows = editorList.querySelectorAll('.editor-dream-row');
+  editorDreams = [];
+  rows.forEach((row, i) => {
+    const input = row.querySelector('input');
+    const removeBtn = row.querySelector('.remove-dream');
+    input.dataset.idx = i;
+    input.placeholder = `Ton rÃªve #${i + 1}...`;
+    removeBtn.dataset.idx = i;
+    editorDreams.push(input.value);
+  });
+}
+
+function openEditor() {
+  editorDreams = [];
+  editorList.innerHTML = '';
+  // Start with 3 empty rows
+  for (let i = 0; i < 3; i++) addEditorRow('');
+  editorOverlay.classList.add('open');
+}
+
+function closeEditor() {
+  editorOverlay.classList.remove('open');
+}
+
+function launchCustomSky() {
+  // Collect non-empty dreams
+  const dreams = editorDreams
+    .map(d => d.trim())
+    .filter(d => d.length > 0);
+
+  if (dreams.length === 0) return;
+
+  // Assign magnitudes based on position/variety
+  const magnitudes = [3, 2.5, 2.5, 2, 3, 2, 1.5, 2.5, 2, 2, 2.5, 1.5, 2, 2.5, 2, 1.5, 2, 2.5, 3, 2];
+
+  const newDreams = dreams.map((title, i) => ({
+    title,
+    desc: '',
+    progress: 0,
+    magnitude: magnitudes[i % magnitudes.length],
+  }));
+
+  // Save custom dreams & switch to custom mode
+  localStorage.setItem('skyDreams30_custom', JSON.stringify(newDreams));
+  closeEditor();
+  switchMode('custom');
+}
+
+editorAddBtn.addEventListener('click', () => addEditorRow(''));
+editorLaunchBtn.addEventListener('click', launchCustomSky);
+editorCancelBtn.addEventListener('click', closeEditor);
+
+// Close editor on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && editorOverlay.classList.contains('open')) {
+    closeEditor();
+  }
+});
+
+// Allow Enter in last input to add a new row
+editorList.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+    e.preventDefault();
+    const rows = editorList.querySelectorAll('.editor-dream-row');
+    const lastInput = rows[rows.length - 1]?.querySelector('input');
+    if (e.target === lastInput) {
+      addEditorRow('');
+    } else {
+      // Move focus to next input
+      const idx = parseInt(e.target.dataset.idx);
+      const nextInput = editorList.querySelector(`input[data-idx="${idx + 1}"]`);
+      if (nextInput) nextInput.focus();
+    }
+  }
+});
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// INIT
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+resize();
+initBgStars();
+placeDreamStars();
+updateModeUI();
+mainLoop();
+</script>
+
+</body>
+</html>
