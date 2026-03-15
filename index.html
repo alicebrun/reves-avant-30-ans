@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mes RÃªves Avant 30 Ans</title>
+  <title>Mes Rêves Avant 30 Ans</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400&display=swap');
 
@@ -257,7 +257,7 @@
       border-color: rgba(167, 139, 250, 0.3);
     }
 
-    /* â•â•â• LOCK BUTTON â•â•â• */
+    /* ═══ LOCK BUTTON ═══ */
     .lock-toggle {
       position: fixed;
       top: 20px;
@@ -289,7 +289,7 @@
       border-color: rgba(139, 250, 167, 0.2);
     }
 
-    /* â•â•â• LOCKED STATES â•â•â• */
+    /* ═══ LOCKED STATES ═══ */
     .input-section.locked {
       opacity: 0 !important;
       pointer-events: none;
@@ -317,7 +317,7 @@
       white-space: nowrap;
     }
 
-    /* â•â•â• CREATE YOUR OWN BUTTON â•â•â• */
+    /* ═══ CREATE YOUR OWN BUTTON ═══ */
     .create-own-btn {
       position: fixed;
       bottom: 100px;
@@ -347,7 +347,7 @@
       box-shadow: 0 0 30px rgba(167, 139, 250, 0.1);
     }
 
-    /* â•â•â• EDITOR OVERLAY â•â•â• */
+    /* ═══ EDITOR OVERLAY ═══ */
     .editor-overlay {
       position: fixed;
       inset: 0;
@@ -539,7 +539,7 @@
       color: rgba(200, 190, 230, 0.6);
     }
 
-    /* â•â•â• MOBILE â•â•â• */
+    /* ═══ MOBILE ═══ */
     @media (max-width: 600px) {
       .title {
         top: 24px;
@@ -659,14 +659,14 @@
 <canvas id="sky"></canvas>
 
 <div class="title">
-  <h1>RÃªves d'Alice</h1>
-  <p>touche les Ã©toiles brillantes</p>
+  <h1>Rêves d'Alice</h1>
+  <p>touche les étoiles brillantes</p>
 </div>
 
 <div class="dream-tooltip" id="tooltip">
   <div class="tooltip-header">
     <div class="tooltip-title" id="tooltipTitle"></div>
-    <button class="tooltip-delete" id="tooltipDelete" title="Supprimer ce rÃªve">Ã—</button>
+    <button class="tooltip-delete" id="tooltipDelete" title="Supprimer ce rêve">×</button>
   </div>
   <div class="tooltip-progress" id="tooltipProgress">
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -675,32 +675,32 @@
   <div class="tooltip-desc" id="tooltipDesc"></div>
 </div>
 
-<button class="sound-toggle" id="soundToggle" title="Activer le son">â™ª</button>
-<button class="lock-toggle" id="lockToggle" title="DÃ©verrouiller l'Ã©dition">ðŸ”’</button>
+<button class="sound-toggle" id="soundToggle" title="Activer le son">♪</button>
+<button class="lock-toggle" id="lockToggle" title="Déverrouiller l'édition">🔒</button>
 
 <div class="input-section">
-  <input type="text" id="dreamInput" placeholder="Envoie un rÃªve dans le ciel..." />
+  <input type="text" id="dreamInput" placeholder="Envoie un rêve dans le ciel..." />
   <button id="sendBtn">Envoyer</button>
 </div>
 
-<button class="create-own-btn" id="createOwnBtn">âœ¦ crÃ©e ton ciel âœ¦</button>
+<button class="create-own-btn" id="createOwnBtn">✦ crée ton ciel ✦</button>
 
 <div class="editor-overlay" id="editorOverlay">
   <div class="editor-panel">
     <div class="editor-header">
-      <h2>CrÃ©e Ton Ciel</h2>
-      <p>entre tes rÃªves et envoie-les dans les Ã©toiles</p>
+      <h2>Crée Ton Ciel</h2>
+      <p>entre tes rêves et envoie-les dans les étoiles</p>
     </div>
     <div class="editor-dreams-list" id="editorList"></div>
-    <button class="editor-add-btn" id="editorAddBtn">+ ajouter un rÃªve</button>
+    <button class="editor-add-btn" id="editorAddBtn">+ ajouter un rêve</button>
     <div class="editor-actions">
-      <button class="editor-launch-btn" id="editorLaunchBtn">âœ¦ envoyer dans le ciel</button>
+      <button class="editor-launch-btn" id="editorLaunchBtn">✦ envoyer dans le ciel</button>
       <button class="editor-cancel-btn" id="editorCancelBtn">annuler</button>
     </div>
   </div>
 </div>
 
-<div class="hint">chaque Ã©toile brillante est un rÃªve Â· clique sur la barre pour ajuster la progression</div>
+<div class="hint">chaque étoile brillante est un rêve · clique sur la barre pour ajuster la progression</div>
 
 <script>
 const canvas = document.getElementById('sky');
@@ -722,9 +722,9 @@ function resize() {
   placeDreamStars();
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 // AUDIO ENGINE - Web Audio API
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 let audioCtx = null;
 let soundEnabled = false;
 let ambientGain = null;
@@ -917,7 +917,7 @@ soundToggle.addEventListener('click', () => {
   initAudio();
   soundEnabled = !soundEnabled;
   soundToggle.classList.toggle('active', soundEnabled);
-  soundToggle.textContent = soundEnabled ? 'â™«' : 'â™ª';
+  soundToggle.textContent = soundEnabled ? '♫' : '♪';
   if (soundEnabled) {
     if (audioCtx.state === 'suspended') audioCtx.resume();
     startAmbient();
@@ -926,9 +926,9 @@ soundToggle.addEventListener('click', () => {
   }
 });
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 // BACKGROUND STARS - multi-layered, varied colors
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 const bgStars = [];
 const BG_COUNT = isMobile ? 350 : 800;
 
@@ -966,35 +966,35 @@ function initBgStars() {
   bgStars.forEach(s => { s.baseX = s.x; s.baseY = s.y; });
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 // DREAM STARS - with progress & magnitude
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 //
-// progress: 0.0 (pas commencÃ©) â†’ 1.0 (rÃ©alisÃ©)
-//   â†’ contrÃ´le la luminositÃ© / visibilitÃ©
-// magnitude: 1 (petit rÃªve) â†’ 3 (immense rÃªve)
-//   â†’ contrÃ´le la taille physique de l'Ã©toile
+// progress: 0.0 (pas commencé) → 1.0 (réalisé)
+//   → contrôle la luminosité / visibilité
+// magnitude: 1 (petit rêve) → 3 (immense rêve)
+//   → contrôle la taille physique de l'étoile
 
 const defaultDreams = [
-  { title: 'Ã‰crire un livre fantasy',             desc: 'CrÃ©er un univers entier, une saga Ã©pique',                    progress: 0, magnitude: 3 },
-  { title: 'Faire un semi Iron Man',              desc: 'Nager, pÃ©daler, courir â€” repousser chaque limite',            progress: 0, magnitude: 2.5 },
+  { title: 'Écrire un livre fantasy',             desc: 'Créer un univers entier, une saga épique',                    progress: 0, magnitude: 3 },
+  { title: 'Faire un semi Iron Man',              desc: 'Nager, pédaler, courir — repousser chaque limite',            progress: 0, magnitude: 2.5 },
   { title: 'Composer une musique de film',        desc: 'Faire vibrer les gens avec une bande originale',              progress: 0, magnitude: 3 },
   { title: 'Faire un film',                       desc: 'Raconter une histoire qui marque les esprits',                progress: 0, magnitude: 3 },
-  { title: 'Jouer de la guitare dans un groupe',  desc: 'Apprendre l\'Ã©lectrique et monter sur scÃ¨ne',                 progress: 0, magnitude: 2.5 },
-  { title: 'RandonnÃ©e du Seigneur des Anneaux',   desc: 'Marcher sur les traces de la CommunautÃ© en Nouvelle-ZÃ©lande', progress: 0, magnitude: 2.5 },
-  { title: 'Cacher un trÃ©sor',                    desc: 'Enterrer un secret quelque part dans le monde',               progress: 0, magnitude: 1.5 },
-  { title: 'Question pour un Champion',           desc: 'Briller sur le plateau de la lÃ©gendaire Ã©mission',            progress: 0, magnitude: 2 },
-  { title: 'CrÃ©er un jeu vidÃ©o',                  desc: 'Donner vie Ã  un monde interactif',                            progress: 0, magnitude: 2.5 },
-  { title: 'Devenir courageuse',                  desc: 'Oser sans hÃ©siter, affronter ses peurs',                      progress: 0, magnitude: 2 },
-  { title: 'Apprendre Ã  me battre',               desc: 'MaÃ®triser un art martial, se sentir forte',                   progress: 0, magnitude: 2 },
-  { title: 'Finir un triathlon',                   desc: 'Franchir la ligne d\'arrivÃ©e, Ã©puisÃ©e mais fiÃ¨re',            progress: 0, magnitude: 2 },
-  { title: 'Aventure vÃ©lo Ã  travers la France',   desc: 'PÃ©daler de village en village, libre comme l\'air',           progress: 0, magnitude: 2 },
-  { title: 'Construire un camping',               desc: 'CrÃ©er un lieu magique en pleine nature',                      progress: 0, magnitude: 2.5 },
-  { title: 'Passer 1000 Elo aux Ã©checs',          desc: 'Progresser coup aprÃ¨s coup, devenir stratÃ¨ge',                progress: 0, magnitude: 1.5 },
-  { title: 'Battre mon pÃ¨re au tennis',            desc: 'Le jour de gloire viendra',                                   progress: 0, magnitude: 2 },
+  { title: 'Jouer de la guitare dans un groupe',  desc: 'Apprendre l\'électrique et monter sur scène',                 progress: 0, magnitude: 2.5 },
+  { title: 'Randonnée du Seigneur des Anneaux',   desc: 'Marcher sur les traces de la Communauté en Nouvelle-Zélande', progress: 0, magnitude: 2.5 },
+  { title: 'Cacher un trésor',                    desc: 'Enterrer un secret quelque part dans le monde',               progress: 0, magnitude: 1.5 },
+  { title: 'Question pour un Champion',           desc: 'Briller sur le plateau de la légendaire émission',            progress: 0, magnitude: 2 },
+  { title: 'Créer un jeu vidéo',                  desc: 'Donner vie à un monde interactif',                            progress: 0, magnitude: 2.5 },
+  { title: 'Devenir courageuse',                  desc: 'Oser sans hésiter, affronter ses peurs',                      progress: 0, magnitude: 2 },
+  { title: 'Apprendre à me battre',               desc: 'Maîtriser un art martial, se sentir forte',                   progress: 0, magnitude: 2 },
+  { title: 'Finir un triathlon',                   desc: 'Franchir la ligne d\'arrivée, épuisée mais fière',            progress: 0, magnitude: 2 },
+  { title: 'Aventure vélo à travers la France',   desc: 'Pédaler de village en village, libre comme l\'air',           progress: 0, magnitude: 2 },
+  { title: 'Construire un camping',               desc: 'Créer un lieu magique en pleine nature',                      progress: 0, magnitude: 2.5 },
+  { title: 'Passer 1000 Elo aux échecs',          desc: 'Progresser coup après coup, devenir stratège',                progress: 0, magnitude: 1.5 },
+  { title: 'Battre mon père au tennis',            desc: 'Le jour de gloire viendra',                                   progress: 0, magnitude: 2 },
 ];
 
-// â•â•â• STORAGE HELPERS (safe for file:// protocol) â•â•â•
+// ═══ STORAGE HELPERS (safe for file:// protocol) ═══
 function store(key, data) {
   try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
 }
@@ -1008,7 +1008,7 @@ function retrieve(key) {
 // Mode: 'alice' = Alice's original dreams, 'custom' = visitor's custom sky
 let currentMode = retrieve('skyMode') || 'alice';
 
-// If custom mode but no custom data â†’ reset to alice
+// If custom mode but no custom data → reset to alice
 if (currentMode === 'custom' && !retrieve('skyDreams30_custom')) {
   currentMode = 'alice';
   store('skyMode', 'alice');
@@ -1043,7 +1043,7 @@ function switchMode(mode) {
   playLaunchSound();
 }
 
-// â•â•â• EDIT LOCK SYSTEM â•â•â•
+// ═══ EDIT LOCK SYSTEM ═══
 // Alice mode: locked by default, need secret code to edit
 // Custom mode: always unlocked (visitor's own sky)
 const ALICE_SECRET = 'pizza';
@@ -1064,17 +1064,17 @@ function updateEditLock() {
     deleteBtn.classList.remove('locked');
     progressBar.classList.remove('locked');
     if (currentMode === 'alice') {
-      lockBtn.textContent = 'ðŸ”“';
+      lockBtn.textContent = '🔓';
       lockBtn.classList.add('unlocked');
-      lockBtn.title = 'Ã‰dition dÃ©verrouillÃ©e';
+      lockBtn.title = 'Édition déverrouillée';
     }
   } else {
     inputSection.classList.add('locked');
     deleteBtn.classList.add('locked');
     progressBar.classList.add('locked');
-    lockBtn.textContent = 'ðŸ”’';
+    lockBtn.textContent = '🔒';
     lockBtn.classList.remove('unlocked');
-    lockBtn.title = 'DÃ©verrouiller l\'Ã©dition';
+    lockBtn.title = 'Déverrouiller l\'édition';
   }
 
   // Hide lock button entirely in custom mode (always editable)
@@ -1088,7 +1088,7 @@ document.getElementById('lockToggle').addEventListener('click', () => {
     updateEditLock();
     return;
   }
-  const code = prompt('Code secret pour Ã©diter les rÃªves d\'Alice :');
+  const code = prompt('Code secret pour éditer les rêves d\'Alice :');
   if (code && code.trim().toLowerCase() === ALICE_SECRET) {
     aliceUnlocked = true;
     updateEditLock();
@@ -1100,12 +1100,12 @@ function updateModeUI() {
   const btn = document.getElementById('createOwnBtn');
 
   if (currentMode === 'custom') {
-    titleEl.textContent = 'Mes RÃªves';
-    btn.textContent = 'âœ¦ rÃªves d\'alice âœ¦';
+    titleEl.textContent = 'Mes Rêves';
+    btn.textContent = '✦ rêves d\'alice ✦';
     btn.onclick = () => switchMode('alice');
   } else {
-    titleEl.textContent = 'RÃªves d\'Alice';
-    btn.textContent = 'âœ¦ crÃ©e ton ciel âœ¦';
+    titleEl.textContent = 'Rêves d\'Alice';
+    btn.textContent = '✦ crée ton ciel ✦';
     btn.onclick = openEditor;
     aliceUnlocked = false; // Re-lock when switching back to alice
   }
@@ -1138,7 +1138,7 @@ function placeDreamStars() {
     const progress = Math.max(0, Math.min(1, dream.progress || 0));
     const magnitude = dream.magnitude || 1.5;
 
-    // Size based on magnitude: bigger dreams â†’ bigger stars
+    // Size based on magnitude: bigger dreams → bigger stars
     const sizeScale = isMobile ? 3 : 4.5;
     const baseSize = 4 + magnitude * sizeScale;
 
@@ -1181,9 +1181,9 @@ function hashStr(str) {
   return Math.abs(h);
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 // SHOOTING STARS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 const shooters = [];
 for (let i = 0; i < 3; i++) shooters.push({ active: false });
 
@@ -1198,9 +1198,9 @@ function resetShooter(s) {
   s.active = true;
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 // PARTICLES
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 const particles = [];
 
 function spawnParticles(x, y, hue) {
@@ -1219,9 +1219,9 @@ function spawnParticles(x, y, hue) {
   }
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 // MAIN LOOP
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 let time = 0;
 let hoveredDream = null;
 let tooltipHovered = false;
@@ -1311,7 +1311,7 @@ function mainLoop() {
     const finalOpacity = Math.min(1, baseOpacity + ds.hoverAnim * 0.4);
     const currentSize = ds.baseSize * ds.born * (0.9 + 0.1 * breathe) + ds.hoverAnim * 4;
 
-    // â”€â”€ Outer soft glow (colored halo around the star) â”€â”€
+    // ── Outer soft glow (colored halo around the star) ──
     const glowR = currentSize * (6 + ds.progress * 5 + ds.hoverAnim * 8);
     const glowO = (0.07 + ds.progress * 0.18 + ds.hoverAnim * 0.2) * ds.born * breathe;
 
@@ -1325,10 +1325,10 @@ function mainLoop() {
     ctx.fillStyle = grad;
     ctx.fill();
 
-    // â”€â”€ Sharp 4-point cross flare (the signature look) â”€â”€
+    // ── Sharp 4-point cross flare (the signature look) ──
     drawSharpFlare(ds.x, ds.y, currentSize, finalOpacity, sc, ds.hoverAnim, ds.progress);
 
-    // â”€â”€ Hot white core â”€â”€
+    // ── Hot white core ──
     const coreR = currentSize * (0.5 + ds.progress * 0.3);
     const coreGrad = ctx.createRadialGradient(ds.x, ds.y, 0, ds.x, ds.y, coreR);
     coreGrad.addColorStop(0, `rgba(255,255,255,${finalOpacity})`);
@@ -1345,7 +1345,7 @@ function mainLoop() {
     ctx.fillStyle = `rgba(255,255,255,${finalOpacity})`;
     ctx.fill();
 
-    // â”€â”€ Realized dreams: pulsing outer ring â”€â”€
+    // ── Realized dreams: pulsing outer ring ──
     if (ds.progress > 0.7) {
       const sparkleIntensity = (ds.progress - 0.7) / 0.3;
       const sparkleR = currentSize * 3.5 + Math.sin(time * 0.02 + ds.twinkleOffset) * 4;
@@ -1434,7 +1434,7 @@ function mainLoop() {
     tooltipDesc.textContent = displayDream.desc;
     const pct = Math.round(displayDream.progress * 100);
     progressFill.style.width = pct + '%';
-    progressText.textContent = pct === 0 ? 'pas encore commencÃ©' : pct >= 100 ? 'âœ¦ rÃ©alisÃ©' : pct + '% accompli';
+    progressText.textContent = pct === 0 ? 'pas encore commencé' : pct >= 100 ? '✦ réalisé' : pct + '% accompli';
 
     if (isMobile) {
       // Center tooltip below the star
@@ -1491,7 +1491,7 @@ function drawSharpFlare(x, y, size, opacity, color, hover, progress) {
 
   ctx.save();
 
-  // â”€â”€ Thick soft flare (background glow of the spike) â”€â”€
+  // ── Thick soft flare (background glow of the spike) ──
   ctx.lineWidth = 2 + hover * 2;
   ctx.globalAlpha = alpha * 0.15;
   ctx.strokeStyle = `rgb(${r},${g},${b})`;
@@ -1500,7 +1500,7 @@ function drawSharpFlare(x, y, size, opacity, color, hover, progress) {
   ctx.moveTo(x, y - vertLen); ctx.lineTo(x, y + vertLen);
   ctx.stroke();
 
-  // â”€â”€ Medium spike â”€â”€
+  // ── Medium spike ──
   ctx.lineWidth = 1 + hover * 0.8;
   ctx.globalAlpha = alpha * 0.35;
   ctx.beginPath();
@@ -1508,7 +1508,7 @@ function drawSharpFlare(x, y, size, opacity, color, hover, progress) {
   ctx.moveTo(x, y - vertLen * 0.8); ctx.lineTo(x, y + vertLen * 0.8);
   ctx.stroke();
 
-  // â”€â”€ Sharp thin spike (the crisp center line) â”€â”€
+  // ── Sharp thin spike (the crisp center line) ──
   ctx.lineWidth = 0.5 + hover * 0.3;
   ctx.globalAlpha = alpha * 0.7;
   ctx.strokeStyle = `rgba(255,255,255,1)`;
@@ -1517,7 +1517,7 @@ function drawSharpFlare(x, y, size, opacity, color, hover, progress) {
   ctx.moveTo(x, y - vertLen * 0.6); ctx.lineTo(x, y + vertLen * 0.6);
   ctx.stroke();
 
-  // â”€â”€ Diagonal spikes (subtle, shorter) â”€â”€
+  // ── Diagonal spikes (subtle, shorter) ──
   ctx.lineWidth = 0.6 + hover * 0.4;
   ctx.globalAlpha = alpha * 0.2;
   ctx.strokeStyle = `rgb(${r},${g},${b})`;
@@ -1526,7 +1526,7 @@ function drawSharpFlare(x, y, size, opacity, color, hover, progress) {
   ctx.moveTo(x + diagLen, y - diagLen); ctx.lineTo(x - diagLen, y + diagLen);
   ctx.stroke();
 
-  // â”€â”€ Gradient fade on spike tips using thin triangles â”€â”€
+  // ── Gradient fade on spike tips using thin triangles ──
   // This creates the tapered look at the ends of each spike
   ctx.globalAlpha = 1;
   const tipAlpha = alpha * 0.25;
@@ -1611,9 +1611,9 @@ function drawNebula() {
   ctx.fillRect(0, 0, W, H);
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 // LAUNCH NEW DREAM
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 function launchDream() {
   if (!canEdit()) return;
   const input = document.getElementById('dreamInput');
@@ -1622,7 +1622,7 @@ function launchDream() {
   input.value = '';
 
   const dreams = loadDreams();
-  dreams.push({ title: text, desc: 'Un nouveau rÃªve dans les Ã©toiles...', progress: 0, magnitude: 1.5 });
+  dreams.push({ title: text, desc: 'Un nouveau rêve dans les étoiles...', progress: 0, magnitude: 1.5 });
   saveDreams(dreams);
 
   placeDreamStars();
@@ -1635,9 +1635,9 @@ function launchDream() {
   }
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 // CLICK / TAP TO ADJUST PROGRESS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 let tappedDream = null;
 
 function handleStarInteraction(x, y) {
@@ -1710,9 +1710,9 @@ canvas.addEventListener('click', (e) => {
   }
 });
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// PROGRESS BAR CLICK â€” set progress by click position
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
+// PROGRESS BAR CLICK — set progress by click position
+// ═══════════════════════════════════════════
 document.querySelector('.progress-bar').addEventListener('click', (e) => {
   e.stopPropagation();
   if (!canEdit()) return;
@@ -1738,9 +1738,9 @@ document.querySelector('.progress-bar').addEventListener('click', (e) => {
   }
 });
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 // DELETE DREAM
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 document.getElementById('tooltipDelete').addEventListener('click', (e) => {
   e.stopPropagation();
   if (!canEdit()) return;
@@ -1764,9 +1764,9 @@ document.getElementById('tooltipDelete').addEventListener('click', (e) => {
   }
 });
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 // EVENTS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 
 // Desktop: mouse
 document.addEventListener('mousemove', e => {
@@ -1813,9 +1813,9 @@ document.getElementById('dreamInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') launchDream();
 });
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// "CRÃ‰E TON CIEL" EDITOR
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
+// "CRÉE TON CIEL" EDITOR
+// ═══════════════════════════════════════════
 const editorOverlay = document.getElementById('editorOverlay');
 const editorList = document.getElementById('editorList');
 const editorAddBtn = document.getElementById('editorAddBtn');
@@ -1831,8 +1831,8 @@ function addEditorRow(value = '') {
   const row = document.createElement('div');
   row.className = 'editor-dream-row';
   row.innerHTML = `
-    <input type="text" placeholder="Ton rÃªve #${idx + 1}..." value="${value.replace(/"/g, '&quot;')}" data-idx="${idx}" />
-    <button class="remove-dream" data-idx="${idx}">Ã—</button>
+    <input type="text" placeholder="Ton rêve #${idx + 1}..." value="${value.replace(/"/g, '&quot;')}" data-idx="${idx}" />
+    <button class="remove-dream" data-idx="${idx}">×</button>
   `;
   editorList.appendChild(row);
 
@@ -1861,7 +1861,7 @@ function rebuildEditorIndices() {
     const input = row.querySelector('input');
     const removeBtn = row.querySelector('.remove-dream');
     input.dataset.idx = i;
-    input.placeholder = `Ton rÃªve #${i + 1}...`;
+    input.placeholder = `Ton rêve #${i + 1}...`;
     removeBtn.dataset.idx = i;
     editorDreams.push(input.value);
   });
@@ -1931,9 +1931,9 @@ editorList.addEventListener('keydown', (e) => {
   }
 });
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 // INIT
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════
 resize();
 initBgStars();
 placeDreamStars();
